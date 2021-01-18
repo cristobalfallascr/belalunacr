@@ -100,8 +100,10 @@ const getProductByCategory = async (req, res, next) => {
     const error = new HttpError("Lo sentimos, no se encontro productos.", 404);
     return next(error);
   }
-  res.json({ count: products.length, 
-    products: products.map((product) => product.toObject({ getters: true })) });
+  res.json({
+    count: products.length,
+    products: products.map((product) => product.toObject({ getters: true })),
+  });
 };
 
 //exports
