@@ -51,4 +51,8 @@ router.get("/categorias/:category", ProductControllers.getProductByCategory);
 
 router.get("/:pId", ProductControllers.getProductById);
 
+// route to delete a product
+
+router.delete("/:pId", ProductControllers.deleteProduct);
+
 module.exports = router;

@@ -148,8 +148,35 @@ const updateProduct = async (req, res, next) => {
   });
 };
 
+// Controller to delete a product from DB
+const deleteProduct = async (req, res, next) => {
+  productId = req.params.pId;
+  let product;
+  try {
+    product = await Product.findById(productId);
+  } catch (err) {
+    const error = new HttpError(
+      " Algo salio mal, no se encontro producto",
+      500
+    );
+    return next(error);
+  }
+  try {
+    await product.remove();
+  } catch (err) {
+    const error = new HttpError(
+      "Algo salio mal, no se pudo borrar producto",
+      500
+    );
+    return next(error);
+  }
+
+  res.status(200).json({ message: "Producto eliminado" });
+};
+
 //exports
 exports.createProduct = createProduct;
 exports.getProductById = getProductById;
 exports.getProductByCategory = getProductByCategory;
 exports.updateProduct = updateProduct;
+exports.deleteProduct = deleteProduct;
