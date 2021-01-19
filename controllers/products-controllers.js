@@ -106,7 +106,50 @@ const getProductByCategory = async (req, res, next) => {
   });
 };
 
+const updateProduct = async (req, res, next) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    const error = new HttpError("Algo salio mal, verifica los datos ", 500);
+    return next(error);
+  }
+
+  const { name, description } = req.body;
+
+  const productId = req.params.pId;
+
+  let product;
+
+  try {
+    product = await Product.findById(productId);
+  } catch (err) {
+    const error = new HttpError(
+      "Algo salio mal, no se encuentra el producto",
+      500
+    );
+    return next(error);
+  }
+
+  product.name = name;
+  product.description = description;
+
+  try {
+    await product.save();
+  } catch (err) {
+    const error = new HttpError(
+      "Algo salio mal, no fue posible guardar los cambios",
+      500
+    );
+    return next(error);
+  }
+
+  res.status(200).json({
+    message: "Producto actualizado",
+    product: product.toObject({ getters: true }),
+  });
+};
+
 //exports
 exports.createProduct = createProduct;
 exports.getProductById = getProductById;
 exports.getProductByCategory = getProductByCategory;
+exports.updateProduct = updateProduct;
