@@ -5,6 +5,7 @@ const mongoose = require("mongoose");
 
 //local modules
 const productRoutes = require('./routes/products-routes');
+const usersRoutes = require('./routes/users-routes');
 
 
 
@@ -25,7 +26,7 @@ app.use(bodyParser.json());
 //application routes
 
 app.use("/api/products", productRoutes);
-// app.use("api/users", usersRoutes);
+app.use("/api/users", usersRoutes);
 
 //middleware to handle error responses in unsopported routes
 app.use((req, res, next) =>{
